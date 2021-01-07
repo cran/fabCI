@@ -1,7 +1,7 @@
 #' @title FAB t-interval with z-optimal w-function
 #' 
 #' @description Computation of a 1-alpha FAB t-interval using the w-function of
-#' the optimal FAB z-interval. 
+#' the optimal FAB z-interval
 #'  
 #' @details Internal function for multifabCIhom. It's similar to fabtCI, the 
 #' difference being that fabtwzCI uses the w-function that leads to the 
@@ -13,8 +13,7 @@
 #' @param muw prior expectation of the mean
 #' @param t2w prior variance of the  mean
 #' @param s2w assumed population variance
-#' @param alpha the type I error rate, so 1-alpha is the coverage rate  
-#' 
+#' @param alpha the type I error rate, so 1-alpha is the coverage rate  #' 
 #' @author Chaoyu Yu  
 #' 
 #' @keywords internal 
@@ -43,7 +42,8 @@ fabtwzCI<-function(y,s2,df,muw,t2w,s2w,alpha=.05)
   
   a<-b<- ybar + (s/sqrt(n))*qt(1-alpha,df)
   while(ubroot(a)<0){ a<- a - 1e-12  }
-  while(ubroot(b)>0){ b<- b + s*qnorm(1-alpha)*.25 }
+  #while(ubroot(b)>0){ b<- b + s*qnorm(1-alpha)*.25 }
+  while(ubroot(b)>0){ b<- b + s }
   thetaU<-uniroot(ubroot,c(a,b))$root
   
   
@@ -54,7 +54,8 @@ fabtwzCI<-function(y,s2,df,muw,t2w,s2w,alpha=.05)
   }
   
   a<-b<- ybar + (s/sqrt(n))*qt(alpha,df)
-  while(lbroot(a)<0){ a<- a + s*qnorm(alpha)*.25 }
+  #while(lbroot(a)<0){ a<- a + s*qnorm(alpha)*.25 }
+  while(lbroot(a)<0){ a<- a - s }   
   while(lbroot(b)>0){ b<- b + 1e-12  }
   thetaL<-uniroot(lbroot,c(a,b))$root
   
@@ -65,7 +66,7 @@ fabtwzCI<-function(y,s2,df,muw,t2w,s2w,alpha=.05)
 
 #' @title Hierarchical homoscedastic model estimates 
 #' 
-#' @description Estimate across-group heterogeneity of means. 
+#' @description Estimate across-group heterogeneity of means
 #'
 #' @details This function estimates 
 #' parameters in a hierarchical model for normally distributed
